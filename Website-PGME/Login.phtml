@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <style type="text/css">
+        footer{
+            position:absolute;
+            top:480px;
+        }
+    </style>
+    
+    </head>
+    <body>
+        <div class="navBar">
+            <a href="Home.html" target="_self">Home</a>
+            <a href="Partij.html" target="_self">Partij</a>
+            <a href="Nieuws.html" target="_self">Nieuws</a>
+            <a href="Registreren.phtml" target="_self">Registreren</a>
+            <div id="navLogo"><a href="Home.html"><img src="Fotos/PGME-logo-name+symbol.jpg" height="50px"></a></div>
+            
+            <div id="login">
+            <a href="Login.phtml">Login</a></div>
+  </div>
+        <div class="headers">
+            <h1>Login</h1>
+        </div>
+         <main>
+            <!--index-bg is het rechthoekige balk waarin content is-->
+            <div class="index-bg">
+                <!--index-content houdt de padding-->
+                <div class="index-content">
+                <br>
+                <?php
+                // require de database
+                require "php/database.php";
+                $userid = $wachtwoord = "";
+                
+                if (isset($_POST['inloggen'])) {
+                // $wachtwoord = sha1($_POST["wachtwoord"]);
+                $wachtwoord = $_POST["wachtwoord"];
+                $userid = $_POST["userid"];
+               
+                $sql = "select * from accounts
+                where gebruikersnaam = '$userid'
+                and wachtwoord = '$wachtwoord'";
+                
+                echo $sql;
+                
+                $result = $conn->query($sql);
+                $aantalRijen = $result->rowCount();
+                
+                if ($aantalRijen == 1) {
+                  $row = $result->fetch();
+                  
+                //maak de sessies aan
+                $_SESSION["voornaam"] = $row["voornaam"];
+                $_SESSION["achternaam"] = $row["achternaam"];
+                //maak de cookie aan
+                $cookie_naam = "userid";
+                $cookie_waarde = $userid;
+                setcookie($cookie_naam, $cookie_waarde, time() + 60, "/");
+                
+                $cookie_naam = "userid";
+                    if(!isset($_COOKIE[$cookie_naam])) {
+                        echo "
+                        Gebruikersnaam of wachtwoord zijn niet correct!";
+                    }else{
+                        echo "waarde is: " . $_COOKIE[$cookie_naam];
+                        //link door naar het commandcenter
+                        header("location: observer.phtml");
+                    }
+                } else{
+                    echo "Gebruikersnaam bestaat niet.";
+            }   
+            
+                // Admin dit is het functie om in te loggen als een amdin.
+                // $sql = "select * from accounts
+                // where rol = '$rol'
+                // and wachtwoord = '$wachtwoord'";
+                
+                // $rol = "admin";
+                
+                // $cookie_naam = "key";
+                // $cookie_waarde = $rol;
+                // setcookie($cookie_naam, $cookie_waarde, time() + 60, "/");
+                
+                // $cookie_naam = "key";
+                //     if(!isset($_COOKIE[$cookie_naam])) {
+                //         echo "Je bent onterecht op deze pagina gekomen.";
+                //     }else{
+                //         echo "waarde is: " . $_COOKIE[$cookie_naam];
+                //         //link door naar ingelogd.php
+                //         header("location: observer.phtml");
+                //     }
+                //     echo $sql;
+                //     $conn = null;
+                    }
+                ?>
+                    <!--Het html form structuur    -->
+                      <h2>Login heir</h2>
+                     
+                      <p><span class = "error">* verplicht veld.</span></p>
+                     
+                      <form method="POST">
+                         <table>
+                            <tr>
+                               <td>Gebruikersnaam:</td>
+                               <td><input type = "text" name = "userid" required maxlength="20" value="<?php echo $gebruikersnaam;?>">
+                                  <span class = "error">* </span>
+                               </td>
+                            </tr>
+                           
+                            <tr>
+                               <td>Wachtwoord:</td>
+                               <td><input type = "password" name = "wachtwoord" required maxlength="50">
+                                  <span class = "error">* </span>
+                               </td>
+                            </tr>
+                 
+                            <tr>
+                               <td>
+                                  <input type = "submit" name = "inloggen" value = "Inloggen">
+                               </td>
+                            </tr>
+                         </table>
+                      </form>
+                </div>
+            </div>
+            
+            
+         <footer>
+        <div id="VVI">
+   
+            <a href="Voorzitters.html" target="_self">Voorzitters</a>
+            <a href="Vacatures.html" target="_self">Vacatures</a>
+            <a href="Info.html" target="_self">Info</a>
+  </div>
+        
+        <div id="fE-mail">
+        <form>
+            Om up te date te zijn.<br>
+            <input id="Fe-mail-txt" type="email" name="mail" value="Email">
+            <input id="Fe-mail-sub" type="submit" value="Submit">
+            
+            </form>
+        </div>
+        
+        <div id="Smedia">
+            
+            <ul style="list-style-type:none">
+            <li>
+                <a href="https://www.facebook.com"><img src="Fotos/Facebook-icon.png" height="106px"></a>
+                </li>
+                <li>
+                <a href="https://plus.google.com"><img src="Fotos/google-plus-icon.png" height="100px"></a>
+                </li>
+                <li>
+                
+                <a href="https://twitter.com"><img src="Fotos/twitter-icon.png" height="100px"></a>
+                </li>
+                
+                
+            </ul>
+        
+        </div>
+        
+    
+        
+        </footer>
+           
+        </main>
+        
+    </body>
+</html>

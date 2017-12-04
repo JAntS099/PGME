@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registreren</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <style type="text/css">
+        footer{
+            position:absolute;
+            top:150%;
+        }
+    </style>
+    
+    </head>
+    
+    <body>
+        <div class="navBar">
+            <a href="Home.html" target="_self">Home</a>
+            <a href="Partij.html" target="_self">Partij</a>
+            <a href="Nieuws.html" target="_self">Nieuws</a>
+            <a href="Registreren.phtml" target="_self">Registreren</a>
+            <div id="navLogo"><a href="Home.html"><img src="Fotos/PGME-logo-name+symbol.jpg" height="50px"></a></div>
+            
+            <div id="login">
+            <a href="Login.phtml">Login</a></div>
+  </div>
+        <div class="headers">
+            <h1>Registreren</h1>
+        </div>
+        
+         <?php
+         require ("php/testinput.php");
+         require ("php/database.php");
+         $ok=true;
+     
+         $nameErr = $achternaamErr = $straatnaamErr = $postcodeErr = $woonplaatsErr = $huisnummer =   $emailErr = $geslachtErr =  "";
+         $voornaam = $tussenvoegsel = $achternaam = $geboortedatum = $geslacht = $straatnaam = $huisnummer = $toevoeging = $postcode = $woonplaats = $email = $telefoonnummer = $gebruikersnaam = $wachtwoord  =  "";
+         $rol = "gebruiker";
+ 
+         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (empty($_POST["voornaam"])) {
+               $nameErr = "Voornaam is verplicht!";
+               $ok=false;
+            }else {
+               $voornaam = test_input($_POST["voornaam"]);
+            }
+         
+            if (isset($_POST["tussenvoegsel"])) {
+                $tussenvoegsel = test_input($_POST["tussenvoegsel"]);
+            }
+             
+            if (empty($_POST["achternaam"])) {
+               $achternaamErr = "Achternaam is verplicht!";
+               $ok=false;
+            }else {
+               $achternaam = test_input($_POST["achternaam"]);
+            }
+           
+            if (empty($_POST["straatnaam"])) {
+               $straatnaamErr = "Straatnaam is verplicht!";
+               $ok=false;
+            }else {
+               $straatnaam = test_input($_POST["straatnaam"]);
+            }
+           
+            if (empty($_POST["huisnummer"])) {
+               $huisnummerErr = "Huisnummer is verplicht!";
+               $ok=false;
+            }else {
+               $huisnummer = test_input($_POST["huisnummer"]);
+            }
+           
+            if (empty($_POST["toevoeging"])) {
+               $toevoegingErr = "Toevoeging is verplicht!";
+            }else {
+               $toevoeging = test_input($_POST["toevoeging"]);
+            }
+           
+            if (empty($_POST["postcode"])) {
+               $postcodeErr = "Postcode is verplicht!";
+               $ok=false;
+            }else {
+               $postcode = test_input($_POST["postcode"]);
+            }
+           
+            if (empty($_POST["woonplaats"])) {
+               $woonplaatsErr = "Woonplaats is verplicht!";
+               $ok=false;
+            }else {
+               $woonplaats = test_input($_POST["woonplaats"]);
+            }
+ 
+            if (empty($_POST["email"])) {
+               $emailErr = "Email is verplicht!";
+               $ok=false;
+            }else {
+               $email = test_input($_POST["email"]);
+               
+               if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                  $emailErr = "verkeerd e-mail formaat";
+               }
+                }
+               
+            if (empty($_POST["telefoonnummer"])) {
+            }else {
+               $telefoonnummer = test_input($_POST["telefoonnummer"]);
+            }
+           
+                if (empty($_POST["gebruikersnaam"])) {
+               $gebruikersnaamErr = "Gebruikersnaam is verplicht!";
+               $ok=false;
+            }else {
+               $gebruikersnaam = test_input($_POST["gebruikersnaam"]);
+            }
+           
+                if (empty($_POST["wachtwoord"])) {  
+               $wachtwoordErr = "Wachtwoord is verplicht!";
+               $ok=false;
+            }else {
+               $wachtwoord = test_input($_POST["wachtwoord"]);
+            }
+            if (empty($_POST["geslacht"])){
+                $geslachtErr = "Geslacht is verplicht!";
+            }else{
+                $geslacht = test_input($_POST['geslacht']);
+            }
+         
+         }
+      ?>
+       
+      <p class = "h2">Registratie van uw info</p><br>
+     
+      <p><span class = "error">* verplicht veld.</span></p>
+     
+      <form method = "POST" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+         <table>
+             <tr>
+               <td>Gebruikersnaam:</td>
+               <td><input type = "text" name = "gebruikersnaam"required maxlength="30" value="<?php echo $gebruikersnaam;?>">
+                  <span class = "error">* <?php echo $gebruikersnaamErr;?></span>
+               </td>
+            </tr>
+            <tr>
+               <td>Wachtwoord:</td>
+               <td><input type = "password" name = "wachtwoord"required maxlength="30" value="<?php echo $wachtwoord;?>">
+                  <span class = "error">* <?php echo $wachtwoordErr;?></span>
+               </td>
+            </tr>
+            <tr>
+               <td>Voornaam:</td>
+               <td><input type = "text" name = "voornaam"required maxlength="30" value="<?php echo $voornaam;?>">
+                  <span class = "error">* <?php echo $nameErr;?></span>
+               </td>
+            </tr>
+           
+            <tr>
+               <td>Tussenvoegsel:</td>
+               <td><input type = "text" name = "tussenvoegsel"maxlength="10" value="<?php echo $tussenvoegsel;?>">
+               </td>
+            </tr>
+           
+            <tr>
+               <td>Achternaam:</td>
+               <td><input type = "text" name = "achternaam"required maxlength="30" value="<?php echo $achternaam;?>">
+                  <span class = "error">*<?php echo $AchternaamErr;?></span>
+               </td>
+            </tr>
+           
+            <tr>
+               <td>Straatnaam:</td>
+               <td> <input type = "text" name = "straatnaam"required maxlength="30" value="<?php echo $straatnaam;?>">
+                  <span class = "error">*<?php echo $straatnaamErr;?></span>
+               </td>
+            </tr>
+                <tr>
+               <td>Huisnummer:</td>
+               <td> <input type = "number" name = "huisnummer" required maxlength="10" value="<?php echo $huisnummer;?>">
+                  <span class = "error">*<?php echo $huisnummerErr;?></span>
+               </td>
+            </tr>
+                <tr>
+               <td>Toevoeging:</td>
+               <td> <input type = "text" name = "toevoeging"maxlength="10" value="<?php echo $toevoeging;?>">
+               </td>
+            </tr>
+                <tr>
+               <td>Postcode:</td>
+               <td> <input type = "text" name = "postcode"required maxlength="6" value="<?php echo $postcode;?>">
+                  <span class = "error">*<?php echo $postcodeErr;?></span>
+               </td>
+            </tr>
+                <tr>
+               <td>Woonplaats:</td>
+               <td> <input type = "text" name = "woonplaats" required maxlength="50" value="<?php echo $woonplaats;?>">
+                  <span class = "error">*<?php echo $woonplaatsErr;?></span>
+               </td>
+            </tr>
+              <tr>
+               <td>E-mail: </td>
+               <td><input type = "text" name = "email" required maxlength="50" value="<?php echo $email;?>">
+                  <span class = "error">*<?php echo $emailErr;?></span>
+               </td>
+            </tr>
+             <tr>
+               <td>Telefoonnummer:</td>
+               <td> <input type = "number" name = "telefoonnummer" maxlength="10" value="<?php echo $telefoonnummer;?>">
+                  <span class = "error"><?php echo $telefoonnummerErr;?></span>
+               </td>
+            </tr>
+            <tr>
+                <td>Geslacht:</td>
+                <td><input type="radio" name="geslacht"  value="vrouw">Vrouw
+                    <input type="radio" name = "geslacht" value ="man">Man
+                  <span class="error">*<?php echo $geslachtErr;?></span>
+                  </td>
+            </tr>
+            <tr>
+                <td> Geboortedatum:</td>
+                <td>
+            <label name="geboortedatum" type="label" name = "geboortedatum"></label>
+            <select name="geboortedatum">
+                 <?php
+                    for($i = 1; $i <= 31; $i++)
+                    {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                    ?>
+                </select>
+                <select name="geboortedatum2">
+                    <?php
+                    for($i = 1; $i <= 12; $i++)
+                    {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                    ?>
+                </select>
+                <select name="geboortedatum3">
+                    <?php
+                    for($i = date('Y'); $i >= 1950; $i--)
+                    {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                    ?>
+                </select>
+                </tr>
+               <tr>
+                  <td></td>
+                  <td><input type = "submit" name = "submit" value = "Verzend"></td>
+               </tr>
+         </table>
+      </form>
+                     <?php
+                     $spatie = " - ";
+                     if (isset($_POST["submit"])) {
+                     if ($ok) {
+                        // echo "<h2>Je gegevens zijn :</h2>";
+                        // echo ("<p> Je gebruikersnaam is $gebruikersnaam</p>");
+                        // echo ("<p> Je wachtwoord is $wachtwoord</p>");
+                        // echo ("<p> Je naam is $voornaam  $tussenvoegsel $achternaam </p>");
+                        // echo ("<p> Je geslacht is $geslacht</p>");
+                        // echo ("<p> Je adres is $straatnaam $huisnummer $toevoeging</p>");
+                        // echo ("<p> Je postcode is $postcode</p>");
+                        // echo ("<p> Je woonplaats is $woonplaats</p>");
+                        // echo ("<p> Je telefoonnummer is $telefoonnummer </p>");
+                        // echo ("<p> Je emailadres is $email</p>");
+                        // echo "uw geboortedatum:" . $_POST["geboortedatum"] . $spatie . $_POST["geboortedatum2"] . $spatie . $_POST["geboortedatum3"];
+                        $geboortedatum = $_POST["geboortedatum3"] . "-" . $_POST["geboortedatum2"] . "-" . $_POST["geboortedatum"];
+                       
+                        for($i = 0; $i < count($subject); $i++) {
+                           echo($subject[$i] . " ");
+                        }
+                       
+                       $sql = "INSERT INTO accounts ( voornaam, tussenvoegsel, achternaam, geboortedatum, geslacht, straatnaam, huisnummer, toevoeging, postcode, woonplaats, emailadres, telefoonnummer, gebruikersnaam, wachtwoord, rol)
+                       VALUES ('$voornaam',  '$tussenvoegsel', '$achternaam','$geboortedatum', '$geslacht','$straatnaam',  '$huisnummer',  '$toevoeging','$postcode', '$woonplaats', '$email', '$telefoonnummer','$gebruikersnaam', '$wachtwoord', '$rol')";
+                        //  echo $sql;
+                        $conn->exec($sql);
+                        $_SESSION["gebruikersnaam"] = $gebruikersnaam;
+                        $conn = null;
+                        }
+                     }
+                     ?>
+                     
+                      <footer>
+        <div id="VVI">
+   
+            <a href="Voorzitters.html" target="_self">Voorzitters</a>
+            <a href="Vacatures.html" target="_self">Vacatures</a>
+            <a href="Info.html" target="_self">Info</a>
+  </div>
+        
+        <div id="fE-mail">
+        <form>
+            Om up te date te zijn.<br>
+            <input id="Fe-mail-txt" type="email" name="mail" value="Email">
+            <input id="Fe-mail-sub" type="submit" value="Submit">
+            
+            </form>
+        </div>
+        
+        <div id="Smedia">
+            
+            <ul style="list-style-type:none">
+            <li>
+                <a href="https://www.facebook.com"><img src="Fotos/Facebook-icon.png" height="106px"></a>
+                </li>
+                <li>
+                <a href="https://plus.google.com"><img src="Fotos/google-plus-icon.png" height="100px"></a>
+                </li>
+                <li>
+                
+                <a href="https://twitter.com"><img src="Fotos/twitter-icon.png" height="100px"></a>
+                </li>
+                
+                
+            </ul>
+        
+        </div>
+        
+    
+        
+        </footer>
+ 
+     
+    </body>
+</html>
